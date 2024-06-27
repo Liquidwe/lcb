@@ -4,7 +4,7 @@ from langchain.agents import AgentExecutor, create_openai_tools_agent
 from langchain_core.agents import AgentActionMessageLog, AgentFinish
 from langchain_core.tools import BaseTool
 from typing import Optional, Type, Dict, Any, List
-from langchain_core.pydantic_v1 import BaseModel, Field
+from langchain_core.pydantic_v1 import Field
 from langchain_core.pydantic_v1 import BaseModel
 import requests
 import json

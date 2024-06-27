@@ -9,7 +9,7 @@ from langchain.tools.render import render_text_description
 from langchain_core.output_parsers.json import parse_json_markdown
 from langchain.agents.json_chat.prompt import TEMPLATE_TOOL_RESPONSE
 from langchain_core.exceptions import OutputParserException
-from langchain_core.runnables import Runnable, RunnablePassthrough
+from langchain_core.runnables import RunnablePassthrough
 import requests
 
 
