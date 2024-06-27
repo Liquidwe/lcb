@@ -19,9 +19,10 @@ prompt1 = ChatPromptTemplate.from_template("随机给出一种 {topic}")
 prompt2 = ChatPromptTemplate.from_template("{story}\n\n写一段简短的描述")
 
 prompt = PromptTemplate.from_template(
-        """鉴于下面的用户问题，将其分类为“LangChain”、“OpenAI”或“其他”。
-
+        """鉴于下面的用户问题，将其分类为“OpenAI”或“LangChain”。
 不要用超过一个字来回应。
+如果是询问下面的相关问题, 比如:
+最火的、最流行的、最新的、最好的...,请分类为“OpenAI”。
 
 <question>
 {question}
@@ -38,17 +39,17 @@ chainA = (
 
 langchainPrompt = PromptTemplate.from_template(
         """您是 langchain 方面的专家。 
-回答问题时始终以“正如老陈告诉我的那样”开头。 
+回答问题时始终以“langchainlangchain...”开头。 
 回答以下问题：
 
 问题：{question}
 回答："""
 )
-langchain_chain = langchainPrompt | model
+langchain_chain = langchainPrompt | model_perplex
 
 OpenAIPrompt = PromptTemplate.from_template(
         """您是 OpenAI 方面的专家。 
-回答问题时始终以“正如奥特曼告诉我的那样”开头。 
+回答问题时始终以“OpenAIOpenAI...”开头。 
 回答以下问题：
 
 问题：{question}
@@ -56,22 +57,12 @@ OpenAIPrompt = PromptTemplate.from_template(
 )
 OpenAI_chain = OpenAIPrompt | model
 
-generalPrompt = PromptTemplate.from_template(
-        """ 回答以下问题：
-
-问题：{question}
-回答："""
-)
-general_chain = generalPrompt | model
-
 
 def route(info):
     if "OpenAI" in info["topic"]:
         return OpenAI_chain
-    elif "LangChain" in info["topic"]:
-        return langchain_chain
     else:
-        return general_chain
+        return langchain_chain
 
 
 @chain
@@ -83,4 +74,4 @@ def custom_chain3(text):
 if __name__ == '__main__':
     # print(custom_chain3.invoke("水果"))
     full_chain = {"topic": chainA, "question": lambda x: x["question"]} | RunnableLambda(route)
-    print(full_chain.invoke({"question": "我如何使用OpenAI的模型?"}))
+    print(full_chain.invoke({"question": "最火的水果是什么？"}))
